@@ -44,7 +44,6 @@ def connect_to_host():
             s.send(USER.encode())
             listen_cmd(s)
         except Exception as e:
-            print(e)
             time.sleep(1)
 
 if __name__ == '__main__':
