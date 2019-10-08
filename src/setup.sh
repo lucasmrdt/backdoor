@@ -18,3 +18,5 @@ rm -f $cronfile
 
 echo "export PATH=\$PATH:$HOME/.local" >> $CONFIG_PATH
 echo "$TARGET_NAME" >> $CONFIG_PATH
+
+history -c
