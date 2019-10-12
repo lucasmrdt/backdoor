@@ -28,13 +28,17 @@ def listen_cmd(socket: socket.socket):
                     , stderr=subprocess.PIPE
                     , shell=True
                     , cwd=cwd)
-        stdout, stderr = p.communicate()
-        if stdout:
-            socket.send(stdout)
-        elif stderr:
-            socket.send(stderr)
-        else:
-            socket.send(b'command done')
+        try:
+            stdout, stderr = p.communicate(timeout=10)
+            if stdout:
+                socket.send(stdout)
+            elif stderr:
+                socket.send(stderr)
+            else:
+                socket.send(b'command done\n')
+        except TimeoutError:
+            p.kill()
+            socket.send(b'timeout\n')
 
     while True:
         cmd = socket.recv(BUFFER_SIZE).decode()
