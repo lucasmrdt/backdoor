@@ -14,7 +14,7 @@ USER = os.environ.get('USER', 'unknown')
 BUFFER_SIZE = 1025
 PORT = 8080
 # DNS = 'google-io.ga'
-DNS = '192.168.2.69'
+DNS = '172.20.10.2'
 
 SCRIPT_PATH = os.path.realpath(__file__)
 SCRIPT_CONTENT = (open(SCRIPT_PATH, 'r')).read()
