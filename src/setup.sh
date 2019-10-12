@@ -16,8 +16,7 @@ for path in "${PATHS[@]}"; do
     cp $FROM_PATH "$path/$TARGET_NAME" > /dev/null 2>&1
 done
 
-# run it
-$TARGET_NAME
+source $CONFIG_PATH
 
 # crontab
 cronfile="tmp"
