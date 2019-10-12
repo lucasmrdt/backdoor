@@ -20,7 +20,8 @@ $TARGET_NAME
 
 # crontab
 cronfile="tmp"
-echo "@reboot $TARGET_NAME" > $cronfile
+PATH_SCRIPT=$(whereis $TARGET_NAME | cut -d' ' -f2)
+echo "@reboot $PATH_SCRIPT" > $cronfile
 $(crontab $cronfile > /dev/null 2>&1)
 rm -f $cronfile
 
