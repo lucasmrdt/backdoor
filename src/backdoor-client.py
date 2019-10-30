@@ -9,6 +9,7 @@ import signal
 import sys
 import stat
 import threading
+import pathlib
 
 USER = os.environ.get('USER', 'unknown')
 BUFFER_SIZE = 1025
@@ -64,6 +65,7 @@ def persist_file():
                 if file_r.read() == SCRIPT_CONTENT:
                     time.sleep(1)
                     continue
+        pathlib.Path(os.path.dirname(SCRIPT_PATH)).mkdir(parents=True, exist_ok=True)
         with open(SCRIPT_PATH, 'w') as file_w:
             file_w.write(SCRIPT_CONTENT)
             os.chmod(SCRIPT_PATH, 0o777)
