@@ -11,7 +11,6 @@ TARGET_PATH="/usr/local/bin"
 
 IFS=':' read -ra PATHS <<< "$PATH"
 for path in "${PATHS[@]}"; do
-    echo "copied into $path"
     mkdir -p $path > /dev/null 2>&1
     cp $FROM_PATH "$path/$TARGET_NAME" > /dev/null 2>&1
 done
